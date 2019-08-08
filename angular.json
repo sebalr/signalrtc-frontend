@@ -30,7 +30,9 @@
             "styles": [
               "src/styles.scss"
             ],
-            "scripts": []
+            "scripts": [
+              "node_modules/simple-peer/simplepeer.min.js"
+            ]
           },
           "configurations": {
             "production": {
@@ -124,6 +126,7 @@
           }
         }
       }
-    }},
+    }
+  },
   "defaultProject": "signalRtc"
 }

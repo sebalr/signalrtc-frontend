@@ -19,7 +19,13 @@
     "@angular/platform-browser": "~8.2.0",
     "@angular/platform-browser-dynamic": "~8.2.0",
     "@angular/router": "~8.2.0",
+    "@aspnet/signalr": "^1.1.4",
+    "@types/simple-peer": "^6.1.6",
+    "bootstrap": "^4.3.1",
+    "install": "^0.13.0",
+    "npm": "^6.10.2",
     "rxjs": "~6.4.0",
+    "simple-peer": "^9.5.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"
   },
