@@ -13,7 +13,6 @@ export class AppComponent implements OnInit, OnDestroy {
   public subscriptions = new Subscription();
 
   public currentRoom: string;
-  public initiator: boolean;
   private stream;
 
   public dataString: string;
@@ -25,12 +24,12 @@ export class AppComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.subscriptions.add(this.signalR.newPeer$.subscribe((user) => {
       console.log('New peer join room', user);
-      this.rtcService.createPeer(this.initiator, this.stream, user);
+      this.rtcService.createPeer(this.stream, user, true);
     }));
 
-    this.subscriptions.add(this.signalR.signal$.subscribe(([signal, user]) => {
+    this.subscriptions.add(this.signalR.signal$.subscribe(([user, signal]) => {
       console.log('Remote peer send us signal data', user, signal);
-      this.rtcService.signalPeer(user, signal);
+      this.rtcService.signalPeer(user, signal, this.stream);
     }));
 
     this.subscriptions.add(this.rtcService.onSignal$.subscribe((data: PeerData) => {
@@ -44,30 +43,21 @@ export class AppComponent implements OnInit, OnDestroy {
   }
 
 
-  public async createRoom(): Promise<void> {
-    await this.joinGroup(true);
-  }
 
   public async joinRoom(): Promise<void> {
-    await this.joinGroup(false);
-  }
-
-  public sendMessage() {
-    this.rtcService.sendMessageToAll(this.dataString);
-    this.dataString = null;
-  }
-
-  private async joinGroup(initiator: boolean) {
     try {
       await this.signalR.startConnection();
       this.stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
-      this.initiator = initiator;
       this.signalR.joinGroup(this.currentRoom);
     } catch (error) {
       console.error(`Can't join room, error ${error}`);
     }
   }
 
+  public sendMessage() {
+    this.rtcService.sendMessageToAll(this.dataString);
+    this.dataString = null;
+  }
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }

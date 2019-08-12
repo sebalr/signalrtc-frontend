@@ -25,7 +25,7 @@ export class RtcService {
 
   constructor() { }
 
-  public createPeer(initiator: boolean, stream, userId: string) {
+  public createPeer(stream, userId: string, initiator: boolean): Instance {
     const peer = new SimplePeer({ initiator, stream });
     this.peers.set(userId, peer);
 
@@ -45,10 +45,19 @@ export class RtcService {
     peer.on('data', data => {
       this.onData.next({ id: userId, data });
     });
+
+    return peer;
   }
 
-  public signalPeer(userId: string, signal: string) {
-    this.peers.get(userId).signal(JSON.parse(signal));
+  public signalPeer(userId: string, signal: string, stream: any) {
+    console.log(signal);
+    const signalObject = JSON.parse(signal);
+    if (this.peers.has(userId)) {
+      this.peers.get(userId).signal(signalObject);
+    } else {
+      const peer = this.createPeer(stream, userId, false);
+      peer.signal(signalObject);
+    }
   }
 
   public sendMessageToAll(message: string) {
