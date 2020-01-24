@@ -1,23 +1,43 @@
 <div class="container-fluid">
   <h1>SignalRTC</h1>
   <div class="row">
-    <div class="col-3">
-      <input [(ngModel)]="currentRoom" required placeholder="Room name" type="text">
+    <div class="col-5">
+      <div class="row">
+        <div class="col">
+          <input [(ngModel)]="currentUser" required placeholder="UserName" type="text">
+        </div>
+        <div class="col">
+          <div class="btn-group" role="group" aria-label="button group">
+            <button [disabled]="!currentUser" (click)="saveUsername()" type="button"
+              class="btn btn-sm btn-primary">Save</button>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col">
+          <app-user-list (userSelected)="onUserSelected($event)"></app-user-list>
+        </div>
+      </div>
     </div>
-    <div class="col">
-      <div class="btn-group" role="group" aria-label="button group">
-        <button [disabled]="!currentRoom" (click)="joinRoom()" type="button" class="btn btn-sm btn-primary">Join
-          room</button>
+    <div class="col-7">
+      <div class="row">
+        <div class="col-8">
+          <input [(ngModel)]="dataString" required placeholder="Write a message" type="text">
+        </div>
+        <div class="col-4">
+          <button (click)="sendMessage()" type="button" class="btn btn-sm btn-secondary">Send</button>
+        </div>
       </div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-3">
-      <input [(ngModel)]="dataString" required placeholder="Write a message" type="text">
-    </div>
-    <div class="col-2">
-      <button (click)="sendMessage()" type="button" class="btn btn-sm btn-secondary">Send</button>
+  <div class="row mt-4">
+    <div class="col">
+      <h5 *ngIf="userVideo">{{userVideo}}</h5>
     </div>
   </div>
-  <router-outlet></router-outlet>
+  <div class="row mt-4">
+    <div class="col">
+      <video #videoPlayer width="320" height="240" controls></video>
+    </div>
+  </div>
 </div>

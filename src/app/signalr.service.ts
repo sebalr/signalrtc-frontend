@@ -9,8 +9,14 @@ export class SignalrService {
 
   private hubConnection: signalR.HubConnection;
 
-  private newPeer = new Subject<any>();
+  private newPeer = new Subject<UserInfo>();
   public newPeer$ = this.newPeer.asObservable();
+
+  private helloAnswer = new Subject<UserInfo>();
+  public helloAnswer$ = this.helloAnswer.asObservable();
+
+  private disconnectedPeer = new Subject<UserInfo>();
+  public disconnectedPeer$ = this.disconnectedPeer.asObservable();
 
   private signal = new Subject<any>();
   private user = new Subject<string>();
@@ -18,7 +24,7 @@ export class SignalrService {
 
   constructor() { }
 
-  public async startConnection(): Promise<void> {
+  public async startConnection(currentUser: string): Promise<void> {
 
     this.hubConnection = new signalR.HubConnectionBuilder()
       .withUrl('https://localhost:5001/signalrtc')
@@ -27,25 +33,32 @@ export class SignalrService {
     await this.hubConnection.start();
     console.log('Connection started');
 
-    this.hubConnection.on('NewPeer', (data) => {
-      this.newPeer.next(data);
+    this.hubConnection.on('NewUser', (data) => {
+      this.newPeer.next(JSON.parse(data));
+    });
+
+    this.hubConnection.on('HelloUser', (data) => {
+      this.helloAnswer.next(JSON.parse(data));
+    });
+
+    this.hubConnection.on('UserDisconnect', (data) => {
+      this.disconnectedPeer.next(JSON.parse(data));
     });
 
     this.hubConnection.on('SendSignal', (signal, user) => {
-      console.log(user, signal);
       this.signal.next(signal);
       this.user.next(user);
     });
-  }
 
-  public joinGroup(group: string) {
-    console.log('join', group);
-    this.hubConnection.invoke('NewPeer', group);
+    this.hubConnection.invoke('NewUser', currentUser);
   }
 
   public sendSignalToUser(signal: string, user: string) {
-    console.log('invoke', signal);
     this.hubConnection.invoke('SendSignal', signal, user);
+  }
+
+  public sayHello(userName: string, user: string): void {
+    this.hubConnection.invoke('HelloUser', userName, user);
   }
 
 }

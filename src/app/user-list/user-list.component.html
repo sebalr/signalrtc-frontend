@@ -1,0 +1,5 @@
+<ul class="list-group mt-4">
+  <li class="list-group-item" (click)="userClicked(user)" *ngFor="let user of users$ | async">
+    {{user.userName}}
+  </li>
+</ul>
