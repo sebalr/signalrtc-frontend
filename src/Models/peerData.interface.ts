@@ -1,9 +1,14 @@
-interface PeerData {
+export interface PeerData {
   id: string;
   data: any;
 }
 
-interface UserInfo {
+export interface UserInfo {
   userName: string;
   connectionId: string;
+}
+
+export interface SignalInfo {
+  user: string;
+  signal: any;
 }

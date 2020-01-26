@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
-import { SignalrService } from '../signalr.service';
 import { RtcService } from '../rtc.service';
+import { UserInfo } from 'src/Models/peerData.interface';
 
 @Component({
   selector: 'app-user-list',
@@ -22,7 +22,6 @@ export class UserListComponent implements OnInit {
   }
 
   public userClicked(user: UserInfo) {
-    console.log(user);
     this.userSelected.emit(user);
   }
 

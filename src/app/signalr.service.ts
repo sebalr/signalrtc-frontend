@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as signalR from "@aspnet/signalr";
-import { Subject, zip } from 'rxjs';
+import { Subject } from 'rxjs';
+import { UserInfo, SignalInfo } from 'src/Models/peerData.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -18,9 +19,8 @@ export class SignalrService {
   private disconnectedPeer = new Subject<UserInfo>();
   public disconnectedPeer$ = this.disconnectedPeer.asObservable();
 
-  private signal = new Subject<any>();
-  private user = new Subject<string>();
-  public signal$ = zip(this.signal, this.user);
+  private signal = new Subject<SignalInfo>();
+  public signal$ = this.signal.asObservable();
 
   constructor() { }
 
@@ -46,8 +46,7 @@ export class SignalrService {
     });
 
     this.hubConnection.on('SendSignal', (signal, user) => {
-      this.signal.next(signal);
-      this.user.next(user);
+      this.signal.next({ user, signal });
     });
 
     this.hubConnection.invoke('NewUser', currentUser);
