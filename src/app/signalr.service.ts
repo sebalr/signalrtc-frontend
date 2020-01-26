@@ -45,7 +45,7 @@ export class SignalrService {
       this.disconnectedPeer.next(JSON.parse(data));
     });
 
-    this.hubConnection.on('SendSignal', (signal, user) => {
+    this.hubConnection.on('SendSignal', (user, signal) => {
       this.signal.next({ user, signal });
     });
 
