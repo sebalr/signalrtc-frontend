@@ -41,7 +41,6 @@ export class RtcService {
   }
 
   public createPeer(stream, userId: string, initiator: boolean): Instance {
-    console.log(stream);
     const peer = new SimplePeer({ initiator, stream });
 
     peer.on('signal', data => {

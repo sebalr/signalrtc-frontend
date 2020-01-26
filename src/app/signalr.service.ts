@@ -33,11 +33,11 @@ export class SignalrService {
     await this.hubConnection.start();
     console.log('Connection started');
 
-    this.hubConnection.on('NewUser', (data) => {
+    this.hubConnection.on('NewUserArrived', (data) => {
       this.newPeer.next(JSON.parse(data));
     });
 
-    this.hubConnection.on('HelloUser', (data) => {
+    this.hubConnection.on('UserSaidHello', (data) => {
       this.helloAnswer.next(JSON.parse(data));
     });
 
