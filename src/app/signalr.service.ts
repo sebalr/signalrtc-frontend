@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import * as signalR from "@aspnet/signalr";
 import { Subject } from 'rxjs';
-import { UserInfo, SignalInfo } from 'src/Models/peerData.interface';
+import { UserInfo, SignalInfo } from 'src/models/peerData.interface';
 
 @Injectable({
   providedIn: 'root'

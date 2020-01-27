@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit, ViewChild, ElementRef } from '@angular/co
 import { RtcService } from './rtc.service';
 import { Subscription } from 'rxjs';
 import { SignalrService } from './signalr.service';
-import { UserInfo, PeerData, SignalInfo } from 'src/Models/peerData.interface';
+import { UserInfo, PeerData, SignalInfo, ChatMessage } from 'src/models/peerData.interface';
 
 @Component({
   selector: 'app-root',
@@ -23,11 +23,15 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public userVideo: string;
 
+  public messages: Array<ChatMessage>;
+
   public mediaError = (): void => { console.error(`Can't get user media`); };
 
   constructor(private rtcService: RtcService, private signalR: SignalrService) { }
 
   ngOnInit() {
+    this.messages = new Array();
+
     this.subscriptions.add(this.signalR.newPeer$.subscribe((user: UserInfo) => {
       this.rtcService.newUser(user);
       this.signalR.sayHello(this.currentUser, user.connectionId);
@@ -50,6 +54,7 @@ export class AppComponent implements OnInit, OnDestroy {
     }));
 
     this.subscriptions.add(this.rtcService.onData$.subscribe((data: PeerData) => {
+      this.messages = [...this.messages, { own: false, message: data.data }];
       console.log(`Data from user ${data.id}: ${data.data}`);
     }));
 
@@ -78,6 +83,7 @@ export class AppComponent implements OnInit, OnDestroy {
 
   public sendMessage() {
     this.rtcService.sendMessage(this.dataString);
+    this.messages = [...this.messages, { own: true, message: this.dataString }];
     this.dataString = null;
   }
   ngOnDestroy() {

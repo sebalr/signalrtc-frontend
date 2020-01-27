@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
 import { RtcService } from '../rtc.service';
-import { UserInfo } from 'src/Models/peerData.interface';
+import { UserInfo } from 'src/models/peerData.interface';
 
 @Component({
   selector: 'app-user-list',

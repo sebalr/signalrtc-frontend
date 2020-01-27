@@ -28,6 +28,20 @@
           <button (click)="sendMessage()" type="button" class="btn btn-sm btn-secondary">Send</button>
         </div>
       </div>
+      <div class="row mt-4">
+        <div class="col">
+
+          <div class="chat-box">
+
+            <ng-container *ngFor="let message of messages">
+              <div [ngClass]="{'my-message': message.own, 'other-message': !message.own}">
+                {{message.message}}
+              </div>
+            </ng-container>
+          </div>
+        </div>
+
+      </div>
     </div>
   </div>
   <div class="row mt-4">
