@@ -4,4 +4,4 @@ This project is the fronted part of the Angular and webRTC tutorial [LINK](https
 
 ## Backend
 
-This is the .NET Core backend [LINK[(https://github.com/sebalr/signalrtc-backend)
+This is the .NET Core backend [LINK](https://github.com/sebalr/signalrtc-backend)
