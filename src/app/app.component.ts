@@ -11,7 +11,7 @@ import { UserInfo, PeerData, SignalInfo, ChatMessage } from 'src/models/peerData
 })
 export class AppComponent implements OnInit, OnDestroy {
 
-  @ViewChild('videoPlayer', { static: false }) videoPlayer: ElementRef;
+  @ViewChild('videoPlayer') videoPlayer: ElementRef;
 
   public subscriptions = new Subscription();
 
